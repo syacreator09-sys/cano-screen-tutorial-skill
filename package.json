@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "node --test",
-    "check": "node --check src/*.js bin/*.js",
+    "check": "node scripts/check-syntax.mjs",
     "doctor": "node bin/cano-screen.js doctor"
   },
   "bin": {
