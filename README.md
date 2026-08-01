@@ -1,5 +1,21 @@
 # CANO Screen Tutorial Skill
 
-Skill multiplataforma para planear, ejecutar y capturar tutoriales web reproducibles con Playwright. La configuración privada, sesiones y resultados viven fuera de Git.
+Plan, execute and capture browser tutorials with a deterministic JSON contract. It supports a dependency-free mock mode and a Playwright live mode when `playwright` is installed.
 
-Estado: construcción inicial en `feature/standalone-v1`.
+## Quick start
+
+```bash
+npm install
+node bin/cano-screen.js doctor
+node bin/cano-screen.js validate examples/image-generator.request.json
+node bin/cano-screen.js capture examples/image-generator.request.json --mock
+```
+
+## Live capture
+
+```bash
+npx playwright install chromium
+node bin/cano-screen.js capture examples/image-generator.request.json --live
+```
+
+Live mode only runs allow-listed actions (`goto`, `click`, `fill`, `press`, `waitFor`, `screenshot`). Credentials and sessions belong in `.runtime/` and are never committed.
