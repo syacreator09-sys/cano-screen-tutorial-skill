@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "runtimeDir": ".runtime",
+  "headless": true,
+  "recordVideo": true,
+  "trace": true,
+  "viewport": {"width": 1440, "height": 900},
+  "allowedDomains": ["example.com"],
+  "redactions": ["[data-private]", "[data-sensitive]"],
+  "actionDefaults": {"timeoutMs": 30000, "typingDelayMs": 35}
+}
