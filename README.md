@@ -6,6 +6,7 @@ Plan, execute and capture browser tutorials with a deterministic JSON contract. 
 
 ```bash
 npm install
+npm run verify
 node bin/cano-screen.js doctor
 node bin/cano-screen.js validate examples/image-generator.request.json
 node bin/cano-screen.js capture examples/image-generator.request.json --mock
@@ -29,3 +30,16 @@ node bin/cano-screen.js auth https://tool.example/login tool-demo
 ```
 
 The resulting storage state is saved under `.runtime/sessions/` and can be referenced with `storageStatePath` in a request.
+
+## Documentation
+
+- [Functional options](docs/OPTIONS.md)
+- [Security](SECURITY.md)
+- [Privacy](PRIVACY.md)
+- [Responsible use](USAGE_POLICY.md)
+- [Brand and identity rights](BRAND_AND_IDENTITY.md)
+- [Third-party notices](THIRD_PARTY_NOTICES.md)
+- [Contributing](CONTRIBUTING.md)
+- [MIT License](LICENSE)
+
+Verification is local only; this repository intentionally contains no GitHub Actions workflows.
