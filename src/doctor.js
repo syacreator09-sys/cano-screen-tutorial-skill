@@ -1,7 +1,10 @@
 import { access, mkdir } from 'node:fs/promises';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 import process from 'node:process';
 import { loadScreenConfig } from './config.js';
+
+const require = createRequire(import.meta.url);
 
 async function exists(file) {
   try { await access(file); return true; } catch { return false; }
@@ -14,15 +17,14 @@ export async function runScreenDoctor({ configFile = 'config/screen.local.json' 
   let chromiumExecutable = null;
   let chromiumInstalled = false;
   try {
-    const pkg = await import('playwright/package.json', { with: { type: 'json' } });
-    playwrightVersion = pkg.default.version;
+    playwrightVersion = require('playwright/package.json').version;
     const { chromium } = await import('playwright');
     chromiumExecutable = chromium.executablePath();
     chromiumInstalled = await exists(chromiumExecutable);
   } catch {}
   const nodeMajor = Number(process.versions.node.split('.')[0]);
   return {
-    ok: nodeMajor >= 20 && Boolean(playwrightVersion),
+    ok: nodeMajor >= 20 && Boolean(playwrightVersion) && chromiumInstalled,
     node: process.version,
     nodeSupported: nodeMajor >= 20,
     platform: process.platform,
