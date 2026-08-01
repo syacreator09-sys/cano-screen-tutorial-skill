@@ -6,11 +6,13 @@ import { buildCapturePlan } from '../src/plan.js';
 import { assertNoInlineSecrets } from '../src/privacy.js';
 import { runMockCapture } from '../src/mock-capture.js';
 import { runLiveCapture } from '../src/live-capture.js';
+import { createAuthorizedSession } from '../src/auth-session.js';
 async function readJson(file){return JSON.parse(await readFile(file,'utf8'));}
 async function main(){
  const [cmd,file,...flags]=process.argv.slice(2);
+ if(cmd==='auth') { const url=file; const name=flags[0] ?? 'default'; if(!url) throw new Error('usage: cano-screen auth <login-url> <session-name>'); const result=await createAuthorizedSession({url,name}); console.log(JSON.stringify(result,null,2)); return; }
  if(cmd==='doctor') { let has=false; try{await import('playwright');has=true}catch{}; console.log(JSON.stringify({node:process.version,platform:process.platform,playwright:has,runtime:path.resolve('.runtime')},null,2)); return; }
- if(!file) throw new Error('usage: cano-screen <validate|plan|capture> request.json [--mock|--live]');
+ if(!file) throw new Error('usage: cano-screen <auth|validate|plan|capture> request.json [--mock|--live]');
  const request=await readJson(file); const plan=buildCapturePlan(request); assertNoInlineSecrets(plan);
  if(cmd==='validate'){console.log(JSON.stringify({ok:true,projectId:plan.projectId},null,2));return;}
  if(cmd==='plan'){console.log(JSON.stringify(plan,null,2));return;}
