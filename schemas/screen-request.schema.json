@@ -1,17 +1,42 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://cano.dev/schemas/screen-request-v1.json",
+  "$id": "https://cano.dev/schemas/screen-request-v1.1.json",
   "title": "CANO Screen Request",
   "type": "object",
-  "required": ["projectId","url","objective","actions"],
+  "required": ["version", "projectId", "url", "objective", "actions"],
   "additionalProperties": false,
   "properties": {
-    "version": {"const":"1.0"},
+    "version": {"enum": ["1.0", "1.1"]},
     "projectId": {"type":"string","pattern":"^[a-z0-9][a-z0-9-]{2,63}$"},
     "url": {"type":"string","pattern":"^https?://|^file://"},
     "objective": {"type":"string","minLength":5},
+    "headless": {"type":"boolean"},
+    "recordVideo": {"type":"boolean"},
+    "trace": {"type":"boolean"},
+    "allowedDomains": {"type":"array","items":{"type":"string"},"uniqueItems":true},
     "viewport": {"type":"object","required":["width","height"],"properties":{"width":{"type":"integer","minimum":320,"maximum":3840},"height":{"type":"integer","minimum":480,"maximum":2160}},"additionalProperties":false},
-    "actions": {"type":"array","minItems":1,"items":{"type":"object","required":["id","type"],"properties":{"id":{"type":"string"},"type":{"enum":["goto","click","fill","press","waitFor","screenshot"]},"selector":{"type":"string"},"value":{"type":"string"},"url":{"type":"string"},"timeoutMs":{"type":"integer","minimum":100,"maximum":120000},"redact":{"type":"boolean"}},"additionalProperties":false}},
+    "actions": {
+      "type":"array",
+      "minItems":1,
+      "items":{
+        "type":"object",
+        "required":["id","type"],
+        "properties":{
+          "id":{"type":"string"},
+          "type":{"enum":["goto","click","fill","type","select","press","waitFor","pause","screenshot"]},
+          "selector":{"type":"string"},
+          "value":{"oneOf":[{"type":"string"},{"type":"array","items":{"type":"string"}}]},
+          "url":{"type":"string"},
+          "timeoutMs":{"type":"integer","minimum":100,"maximum":120000},
+          "durationMs":{"type":"integer","minimum":0,"maximum":120000},
+          "delayMs":{"type":"integer","minimum":0,"maximum":1000},
+          "state":{"enum":["attached","detached","visible","hidden"]},
+          "redact":{"type":"boolean"},
+          "fullPage":{"type":"boolean"}
+        },
+        "additionalProperties":false
+      }
+    },
     "redactions": {"type":"array","items":{"type":"string"}},
     "storageStatePath": {"type":"string"}
   }
