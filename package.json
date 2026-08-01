@@ -1,24 +1,33 @@
 {
   "name": "@cano/screen-tutorial-skill",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": false,
   "type": "module",
-  "description": "Reproducible browser tutorial capture for Claude Code and Codex.",
+  "description": "Reproducible browser tutorial capture with guided setup, Playwright recording, traces and privacy controls.",
   "license": "MIT",
   "engines": {
     "node": ">=20"
+  },
+  "keywords": ["playwright", "screen-recording", "tutorial", "claude-code", "codex"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/syacreator09-sys/cano-screen-tutorial-skill.git"
   },
   "scripts": {
     "test": "node --test",
     "check": "node scripts/check-syntax.mjs",
     "audit:release": "node scripts/audit-release.mjs",
     "verify": "npm test && npm run check && npm run audit:release",
-    "doctor": "node bin/cano-screen.js doctor"
+    "doctor": "node bin/cano-screen.js doctor",
+    "init": "node bin/cano-screen.js init",
+    "smoke": "node bin/cano-screen.js capture examples/image-generator.request.json --mock",
+    "prepublishOnly": "npm run verify"
   },
   "bin": {
     "cano-screen": "bin/cano-screen.js"
   },
+  "files": ["bin", "src", "schemas", "scripts", "docs", "examples", "SKILL.md", "AGENTS.md", "CLAUDE.md", "SECURITY.md", "PRIVACY.md", "USAGE_POLICY.md", "BRAND_AND_IDENTITY.md", "THIRD_PARTY_NOTICES.md", "LICENSE", "README.md"],
   "optionalDependencies": {
-    "playwright": "^1.55.0"
+    "playwright": "^1.62.0"
   }
 }

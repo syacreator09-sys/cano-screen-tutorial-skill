@@ -1,42 +1,49 @@
-# Functional Options
+# Opciones funcionales
 
-## Commands
+## Comandos
 
-| Command | Purpose | Network activity |
+| Comando | Propósito | Red |
 |---|---|---|
-| `cano-screen doctor` | Check Node, platform, Playwright and runtime path | No |
-| `cano-screen validate request.json` | Validate contract and privacy rules | No |
-| `cano-screen plan request.json` | Normalize defaults and action order | No |
-| `cano-screen capture request.json --mock` | Produce deterministic manifests without opening a site | No |
-| `cano-screen auth <url> <name>` | Open a visible browser and save an authorized session | Yes, approved target only |
-| `cano-screen capture request.json --live` | Execute the allow-listed Playwright flow | Yes, approved target only |
+| `cano-screen init` | Crear configuración local mediante preguntas | No |
+| `cano-screen init --seed file.json` | Replicar configuración en otro equipo | No |
+| `cano-screen doctor` | Revisar Node, Playwright, Chromium y configuración | No |
+| `cano-screen validate request.json` | Validar contrato y privacidad | No |
+| `cano-screen plan request.json` | Aplicar defaults y ordenar acciones | No |
+| `cano-screen capture request.json --mock` | Crear manifiestos sin abrir un sitio | No |
+| `cano-screen auth <url> <name>` | Guardar una sesión autorizada | Sí |
+| `cano-screen capture request.json --live` | Ejecutar el recorrido aprobado | Sí |
 
-## Supported actions
+## Acciones
 
-- `goto`
-- `click`
-- `fill`
-- `press`
-- `waitFor`
-- `screenshot`
+- `goto`: navegar a una URL autorizada.
+- `click`: hacer clic y registrar centro del elemento.
+- `fill`: reemplazar el contenido del campo.
+- `type`: escribir con retraso entre teclas.
+- `select`: elegir una opción.
+- `press`: enviar una tecla.
+- `waitFor`: esperar estado de un elemento.
+- `pause`: esperar una duración fija para ritmo o generación.
+- `screenshot`: guardar captura normal o `fullPage`.
 
-## Outputs
+## Salidas
 
 - `capture-manifest.json`
 - `actions.json`
-- optional browser video
-- optional Playwright trace
-- screenshots selected by the request
+- `diagnostics.json`
+- video WebM opcional
+- `trace.zip` opcional
+- screenshots solicitados
 
-## Privacy controls
+## Privacidad
 
-- `redact: true` for sensitive fill actions.
-- `redactions` for selectors that should be hidden during composition.
-- `storageStatePath` for an ignored, pre-authorized session.
+- `redact: true` es obligatorio en acciones sensibles.
+- `redactions` aplica blur persistente por selector CSS.
+- `allowedDomains` evita navegación fuera de objetivos autorizados.
+- `storageStatePath` carga una sesión local ignorada por Git.
 
-## Current limits
+## Límites
 
-- No CAPTCHA solving or access-control bypass.
-- No guarantee that every site remains compatible after UI changes.
-- Visual redaction must be reviewed before publication.
-- The skill captures source material; final cursor animation, zoom and branded editing belong to the composer.
+- No resuelve CAPTCHAs ni evade controles.
+- Los sitios pueden cambiar selectores o bloquear automatización.
+- La redacción automática requiere revisión humana.
+- La edición final, zooms y branding pertenecen al compositor.

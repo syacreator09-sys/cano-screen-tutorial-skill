@@ -1,11 +1,29 @@
 import { validateRequest } from './validate.js';
-export function buildCapturePlan(request) {
+import { normalizeScreenConfig } from './config.js';
+
+export function buildCapturePlan(request, rawConfig = {}) {
   const check = validateRequest(request);
   if (!check.ok) throw new Error(check.errors.join('; '));
-  const viewport = request.viewport ?? { width: 1440, height: 900 };
+  const config = normalizeScreenConfig(rawConfig);
+  const viewport = request.viewport ?? config.viewport;
   return {
-    version: '1.0', projectId: request.projectId, url: request.url, objective: request.objective,
-    viewport, redactions: request.redactions ?? [], storageStatePath: request.storageStatePath ?? null,
-    actions: request.actions.map((action, index) => ({ timeoutMs: 30000, redact: false, ...action, order: index + 1 }))
+    version: '1.1',
+    projectId: request.projectId,
+    url: request.url,
+    objective: request.objective,
+    viewport,
+    headless: request.headless ?? config.headless,
+    recordVideo: request.recordVideo ?? config.recordVideo,
+    trace: request.trace ?? config.trace,
+    allowedDomains: request.allowedDomains ?? config.allowedDomains,
+    redactions: [...new Set([...config.redactions, ...(request.redactions ?? [])])],
+    storageStatePath: request.storageStatePath ?? null,
+    actions: request.actions.map((action, index) => ({
+      timeoutMs: config.actionDefaults.timeoutMs,
+      delayMs: config.actionDefaults.typingDelayMs,
+      redact: false,
+      ...action,
+      order: index + 1
+    }))
   };
 }

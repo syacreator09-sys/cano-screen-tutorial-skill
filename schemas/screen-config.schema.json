@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://cano.dev/schemas/screen-config-v1.json",
+  "title": "CANO Screen Local Configuration",
+  "type": "object",
+  "required": ["version", "runtimeDir", "headless", "recordVideo", "trace", "viewport", "allowedDomains", "redactions", "actionDefaults"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {"const":"1.0"},
+    "runtimeDir": {"type":"string","minLength":1},
+    "headless": {"type":"boolean"},
+    "recordVideo": {"type":"boolean"},
+    "trace": {"type":"boolean"},
+    "viewport": {"type":"object","required":["width","height"],"properties":{"width":{"type":"integer","minimum":320,"maximum":3840},"height":{"type":"integer","minimum":480,"maximum":2160}},"additionalProperties":false},
+    "allowedDomains": {"type":"array","items":{"type":"string"},"uniqueItems":true},
+    "redactions": {"type":"array","items":{"type":"string"},"uniqueItems":true},
+    "actionDefaults": {"type":"object","required":["timeoutMs","typingDelayMs"],"properties":{"timeoutMs":{"type":"integer","minimum":100,"maximum":120000},"typingDelayMs":{"type":"integer","minimum":0,"maximum":1000}},"additionalProperties":false}
+  }
+}
