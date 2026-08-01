@@ -1,45 +1,90 @@
 # CANO Screen Tutorial Skill
 
-Plan, execute and capture browser tutorials with a deterministic JSON contract. It supports a dependency-free mock mode and a Playwright live mode when `playwright` is installed.
+Automatiza tutoriales de navegador reproducibles con Playwright. Genera video WebM, screenshots, trazas, acciones cronometradas, coordenadas del cursor y diagnósticos sin guardar contraseñas en Git.
 
-## Quick start
+> English: clone, run `npm run init`, then use mock mode before authorizing a live browser session.
+
+## Instalación rápida
 
 ```bash
+git clone https://github.com/syacreator09-sys/cano-screen-tutorial-skill.git
+cd cano-screen-tutorial-skill
 npm install
+npm run init
+npx playwright install chromium
 npm run verify
+```
+
+En Windows PowerShell 7, usa los mismos comandos o ejecuta `scripts/setup-windows.ps1`. En macOS también puedes ejecutar `scripts/setup-macos.sh`.
+
+## Primera prueba segura
+
+```bash
 node bin/cano-screen.js doctor
 node bin/cano-screen.js validate examples/image-generator.request.json
 node bin/cano-screen.js capture examples/image-generator.request.json --mock
 ```
 
-## Live capture
+Mock no abre ninguna página. La salida queda en `.runtime/jobs/<project-id>/screen/`.
 
-```bash
-npx playwright install chromium
-node bin/cano-screen.js capture examples/image-generator.request.json --live
-```
+## Captura real
 
-Live mode only runs allow-listed actions (`goto`, `click`, `fill`, `press`, `waitFor`, `screenshot`). Credentials and sessions belong in `.runtime/` and are never committed.
-
-## Authorized sessions
-
-Create a reusable browser session once, without storing passwords in Git:
+1. Configura dominios autorizados con `cano-screen init`.
+2. Crea una sesión manual cuando el sitio requiera login:
 
 ```bash
 node bin/cano-screen.js auth https://tool.example/login tool-demo
 ```
 
-The resulting storage state is saved under `.runtime/sessions/` and can be referenced with `storageStatePath` in a request.
+3. Referencia `.runtime/sessions/tool-demo.json` en la solicitud.
+4. Ejecuta:
 
-## Documentation
+```bash
+node bin/cano-screen.js capture request.json --live
+```
 
-- [Functional options](docs/OPTIONS.md)
-- [Security](SECURITY.md)
-- [Privacy](PRIVACY.md)
-- [Responsible use](USAGE_POLICY.md)
-- [Brand and identity rights](BRAND_AND_IDENTITY.md)
-- [Third-party notices](THIRD_PARTY_NOTICES.md)
-- [Contributing](CONTRIBUTING.md)
+Acciones disponibles: `goto`, `click`, `fill`, `type`, `select`, `press`, `waitFor`, `pause` y `screenshot`. Los selectores configurados en `redactions` permanecen visualmente difuminados durante la captura.
+
+## Configuración repetible
+
+Interactiva:
+
+```bash
+node bin/cano-screen.js init
+```
+
+Desde un archivo para instalar otra computadora:
+
+```bash
+node bin/cano-screen.js init --seed config/screen.example.json
+```
+
+La configuración real se guarda en `config/screen.local.json`, archivo ignorado por Git.
+
+## Comandos
+
+```text
+cano-screen --help
+cano-screen --version
+cano-screen init
+cano-screen doctor
+cano-screen auth <url> <session-name>
+cano-screen validate <request.json>
+cano-screen plan <request.json>
+cano-screen capture <request.json> --mock|--live
+```
+
+## Documentación
+
+- [Configuración](docs/CONFIGURATION.md)
+- [Opciones y contrato](docs/OPTIONS.md)
+- [Solución de problemas](docs/TROUBLESHOOTING.md)
+- [Seguridad](SECURITY.md)
+- [Privacidad](PRIVACY.md)
+- [Uso responsable](USAGE_POLICY.md)
+- [Marca e identidad](BRAND_AND_IDENTITY.md)
+- [Avisos de terceros](THIRD_PARTY_NOTICES.md)
+- [Cambios](CHANGELOG.md)
 - [MIT License](LICENSE)
 
-Verification is local only; this repository intentionally contains no GitHub Actions workflows.
+La verificación es local. El repositorio no contiene GitHub Actions, telemetría, sesiones, credenciales ni grabaciones privadas.
