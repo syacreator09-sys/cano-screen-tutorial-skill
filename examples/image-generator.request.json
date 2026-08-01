@@ -1,0 +1,29 @@
+{
+  "version": "1.0",
+  "projectId": "image-generator-demo",
+  "url": "https://example.com",
+  "objective": "Demostrar cómo escribir un prompt y generar una imagen",
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "actions": [
+    {
+      "id": "open",
+      "type": "goto",
+      "url": "https://example.com"
+    },
+    {
+      "id": "hero",
+      "type": "waitFor",
+      "selector": "h1"
+    },
+    {
+      "id": "final",
+      "type": "screenshot"
+    }
+  ],
+  "redactions": [
+    "input[type=password]"
+  ]
+}
