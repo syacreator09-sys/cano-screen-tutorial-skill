@@ -19,3 +19,13 @@ node bin/cano-screen.js capture examples/image-generator.request.json --live
 ```
 
 Live mode only runs allow-listed actions (`goto`, `click`, `fill`, `press`, `waitFor`, `screenshot`). Credentials and sessions belong in `.runtime/` and are never committed.
+
+## Authorized sessions
+
+Create a reusable browser session once, without storing passwords in Git:
+
+```bash
+node bin/cano-screen.js auth https://tool.example/login tool-demo
+```
+
+The resulting storage state is saved under `.runtime/sessions/` and can be referenced with `storageStatePath` in a request.
